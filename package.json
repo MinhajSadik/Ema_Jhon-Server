@@ -1,8 +1,8 @@
 {
-  "name": "ema-jhon-server",
+  "name": "ema_jhon-server",
   "version": "1.0.0",
   "main": "server.js",
-  "repository": "https://github.com/MinhajSadik/Ema-jhon-Server.git",
+  "repository": "https://github.com/MinhajSadik/Ema_Jhon-Server.git",
   "author": "MinhajSadik",
   "license": "MIT",
   "scripts": {

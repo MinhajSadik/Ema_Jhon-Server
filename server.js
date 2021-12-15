@@ -23,7 +23,7 @@ client.connect((err) => {
   }
 });
 
-const products = client.db("ema_jhon").collection("products");
+const productsCollections = client.db("ema_jhon").collection("allProducts");
 //default route
 app.get("/", (req, res) => {
   res.status(200).send("Hello FrontPage");
@@ -31,12 +31,13 @@ app.get("/", (req, res) => {
 
 //addProduct route
 app.post("/addProduct", (req, res) => {
-  const product = req.body;
-  products.insertOne(product, (err, result) => {
+  const allProducts = req.body;
+  productsCollections.insertMany(allProducts, (err, result) => {
     if (err) {
       console.error(err);
     } else {
-      res.send(result);
+      res.status(200).send(result);
+      console.log("Product Added", result.insertedCount);
     }
   });
 });
