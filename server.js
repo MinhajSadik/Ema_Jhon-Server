@@ -8,6 +8,7 @@ const express = require("express"),
 
 //middleware for express
 app.use(cors());
+app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -24,20 +25,69 @@ client.connect((err) => {
 });
 
 const productsCollections = client.db("ema_jhon").collection("allProducts");
+const orderInfo = client.db("ema_jhon").collection("orderInfo");
 //default route
 app.get("/", (req, res) => {
-  res.status(200).send("Hello FrontPage");
+  res.status(200).send("Hello Ema_Jhon-Server FrontPage");
 });
 
 //addProduct route
 app.post("/addProduct", (req, res) => {
-  const allProducts = req.body;
-  productsCollections.insertMany(allProducts, (err, result) => {
+  const product = req.body;
+  productsCollections.insertOne(product, (err, result) => {
+    if (err) {
+      console.error(err.message);
+    } else {
+      res.status(200).send(result);
+      console.log("Product Added", result.insertedCount);
+    }
+  });
+});
+
+//products route
+app.get("/products", (req, res) => {
+  productsCollections.find({}).toArray((err, result) => {
     if (err) {
       console.error(err);
     } else {
       res.status(200).send(result);
-      console.log("Product Added", result.insertedCount);
+    }
+  });
+});
+
+//product with dynamic key
+app.get("/product/:key", (req, res) => {
+  productsCollections.find({ key: req.params.key }).toArray((err, result) => {
+    if (err) {
+      console.error(err);
+    } else {
+      res.status(200).send(result[0]);
+    }
+  });
+});
+
+//productsByKeys route
+app.post("/productsByKeys", (req, res) => {
+  const productKeys = req.body;
+  productsCollections
+    .find({ key: { $in: productKeys } })
+    .toArray((err, results) => {
+      if (err) {
+        console.error(err);
+      } else {
+        res.status(200).send(results);
+      }
+    });
+});
+
+//orderInfo route
+app.post("/orderInfo", (req, res) => {
+  orderInfo.insertOne(req.body, (err, result) => {
+    if (err) {
+      console.error(err);
+    } else {
+      res.status(200).send(result);
+      console.log("Order Info Added", result.insertedCount);
     }
   });
 });
