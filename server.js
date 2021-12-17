@@ -25,7 +25,7 @@ client.connect((err) => {
 });
 
 const productsCollections = client.db("ema_jhon").collection("allProducts");
-const orderInfo = client.db("ema_jhon").collection("orderInfo");
+const ordersCollections = client.db("ema_jhon").collection("orderInfo");
 //default route
 app.get("/", (req, res) => {
   res.status(200).send("Hello Ema_Jhon-Server FrontPage");
@@ -81,17 +81,26 @@ app.post("/productsByKeys", (req, res) => {
 });
 
 //orderInfo route
-app.post("/orderInfo", (req, res) => {
-  orderInfo.insertOne(req.body, (err, result) => {
+app.post("/addOrder", (req, res) => {
+  const orderInfo = req.body;
+  ordersCollections.insertOne(orderInfo, (err, result) => {
     if (err) {
       console.error(err);
     } else {
       res.status(200).send(result);
-      console.log("Order Info Added", result.insertedCount);
     }
   });
 });
 
+app.get("/user", (req, res) => {
+  ordersCollections.find({}).toArray((err, result) => {
+    if (err) {
+      console.error(err);
+    } else {
+      res.status(200).send(result);
+    }
+  });
+});
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
