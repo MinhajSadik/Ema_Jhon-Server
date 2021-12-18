@@ -1,6 +1,6 @@
 const express = require("express"),
   bodyParser = require("body-parser"),
-  { MongoClient } = require("mongodb"),
+  MongoClient = require("mongodb").MongoClient,
   cors = require("cors"),
   DB_URL = process.env.DB_URL || "mongodb://localhost:27017",
   app = express(),
