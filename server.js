@@ -22,7 +22,6 @@ client.connect((err) => {
   } else {
     console.log("Database Connected...");
   }
-  client.close();
 });
 
 const productsCollections = client.db("ema_jhon").collection("allProducts");
