@@ -22,6 +22,7 @@ client.connect((err) => {
   } else {
     console.log("Database Connected...");
   }
+  client.close();
 });
 
 const productsCollections = client.db("ema_jhon").collection("allProducts");
@@ -101,6 +102,6 @@ app.get("/user", (req, res) => {
     }
   });
 });
-app.listen(PORT, () => {
+app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
