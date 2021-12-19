@@ -31,7 +31,7 @@ const productsCollections = client.db("emaJhon").collection("allProducts");
 const ordersCollections = client.db("emaJhon").collection("orderInfo");
 //default route
 app.get("/", (req, res) => {
-  res.status(200).send("Hello Ema_Jhon-Server FrontPage");
+  res.status(200).send("Hello Ema_Jhon-API");
 });
 
 //addProduct route
