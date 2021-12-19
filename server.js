@@ -2,7 +2,6 @@ const express = require("express"),
   bodyParser = require("body-parser"),
   MongoClient = require("mongodb").MongoClient,
   cors = require("cors"),
-  DB_URL = process.env.DB_URL || "mongodb://localhost:27017",
   app = express(),
   dotenv = require("dotenv").config();
 
@@ -15,6 +14,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Connection URL
 const PORT = process.env.PORT || 3100;
 const options = { useNewUrlParser: true, useUnifiedTopology: true };
+const DB_URL =
+  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.pu4qt.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority` ||
+  "mongodb://localhost:27017/emaJhon";
+
 const client = new MongoClient(DB_URL, options);
 client.connect((err) => {
   if (err) {
@@ -24,8 +27,8 @@ client.connect((err) => {
   }
 });
 
-const productsCollections = client.db("ema_jhon").collection("allProducts");
-const ordersCollections = client.db("ema_jhon").collection("orderInfo");
+const productsCollections = client.db("emaJhon").collection("allProducts");
+const ordersCollections = client.db("emaJhon").collection("orderInfo");
 //default route
 app.get("/", (req, res) => {
   res.status(200).send("Hello Ema_Jhon-Server FrontPage");
@@ -101,6 +104,6 @@ app.get("/user", (req, res) => {
     }
   });
 });
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
